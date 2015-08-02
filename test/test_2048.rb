@@ -1,11 +1,28 @@
 require 'minitest/autorun'
-require '2048'
+require_relative '../lib/2048'
 
 class Test2048 < Minitest::Test
+  def setup
+    @board_with_one_combination_available =
+      [[nil, 2, 8], [nil, 4, 4], [8, 4, 16]]
+
+    # Move up and combination should be: [[nil, 2, 8], [nil, 8, 16], [8, nil, nil]]
+    @board_with_two_combinations_available =
+      [[nil, 2, 4], [nil, 4, 4], [8, 4, 16]]
+  end
+
   def test_random_tile_is_added
+    stub :random_2_or_4, 2 do
+      board = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+      shift_tile(board, 'up')
+      assert_equal board.flatten.compact, [2]
+    end
   end
 
   def test_random_tile_is_either_2_or_4
+    random_tiles = []
+    1000.times { random_tiles << random_2_or_4 }
+    assert_equal random_tiles.uniq.sort, [2, 4]
   end
 
   def test_game_is_over_when_board_is_full_and_no_combinations_are_possible
