@@ -26,6 +26,24 @@ class Test2048 < Minitest::Test
   end
 
   def test_game_is_over_when_board_is_full_and_no_combinations_are_possible
+    board = [[2, 4, 2], [4, 2, 4], [2, 4, 2]]
+    assert_equal true, game_over?(board)
+  end
+
+  def test_game_is_not_over_if_there_are_any_nil_positions
+    board = [[nil, 4, 2], [4, 2, 4], [2, 4, 2]]
+    assert_equal false, game_over?(board)
+  end
+
+  def test_game_is_not_over_if_there_are_any_available_combinations
+    board = [[4, 4, 2], [4, 2, 4], [2, 4, 2]]
+    assert_equal false, game_over?(board)
+  end
+
+  def test_board_can_be_rotated
+    before = [[nil, 2, 8], [nil, 4, 4], [8, 4, 16]]
+    after  = [[8, nil, nil], [4, 4, 2], [16, 4, 8]]
+    assert_equal after, rotate_board_to_the_right(before, 1)
   end
 
   def test_board_can_be_shifted_up
