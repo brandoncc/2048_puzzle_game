@@ -23,15 +23,15 @@ def play
 end
 
 def ask_for_move
-  input_mappings = { 'u' => 'up', 'd' => 'down', 'l' => 'left', 'r' => 'right' }
-  say 'What direction would you like to shift the tiles? (U/D/L/R)'
+  input_mappings = { 'u' => 'up', 'd' => 'down', 'l' => 'left', 'r' => 'right', "\e[a" => 'up', "\e[c" => 'right', "\e[b" => 'down', "\e[d" => 'left' }
+  say "What direction would you like to shift the tiles? (U/\u2191, D/\u2193, L/\u2190, R/\u2192)"
 
   input = gets.chomp.downcase
 
   until input_mappings.keys.include?(input)
     puts
     puts 'Sorry, that is not a valid response.'
-    say 'What direction would you like to shift the tiles? (U/D/L/R)'
+    say "What direction would you like to shift the tiles? (U/\u2191, D/\u2193, L/\u2190, R/\u2192)"
     input = gets.chomp
   end
 
