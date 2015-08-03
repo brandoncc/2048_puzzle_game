@@ -65,8 +65,14 @@ class Test2048 < Minitest::Test
   end
 
   def test_multiple_combinations_are_possible_in_one_line_in_one_turn
+    before = [[2, 2, 8, 8], [2, 2, 2, 2], [2, 2, 2, 2], [4, 4, 4, 4]]
+    after = [[nil, nil, 4, 16], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
+    assert_equal after, combine_tiles(before)
   end
 
   def test_tiles_only_combine_once_per_turn
+    before = [[nil, 2, 2, 4], [2, 2, 2, 2], [2, 2, 2, 2], [4, 4, 4, 4]]
+    after = [[nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
+    assert_equal after, combine_tiles(before)
   end
 end

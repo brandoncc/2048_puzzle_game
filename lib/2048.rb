@@ -29,12 +29,30 @@ def rotate_board_to_the_right(board, times = 1)
   board.length.times do |row|
     rotated_board[row] = []
 
+def combine_tiles(board)
+  board.each do |row|
+    index = 0
+
+    while index < board.length
+      if row[index] && row[index] == row[index + 1]
+        row[index] *= 2
+        row[index + 1] = nil
+        index += 1
+      end
+
     board.length.times do |column|
       rotated_board[row] << reversed_board[column][row]
+      index += 1
+    end
+
+    row.compact!
+
+    until row.length == board.length
+      row.unshift nil
     end
   end
 
-  rotated_board
+  board
 end
 
 private
