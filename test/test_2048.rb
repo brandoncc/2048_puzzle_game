@@ -7,7 +7,7 @@ class Test2048 < Minitest::Test
     stub :random_2_or_4, 2 do
       Array.stub_any_instance :sample, 6 do
         board = [[nil, nil, nil], [2, nil, nil], [nil, nil, nil]]
-        board = shift_tiles(board, 'up')
+        board = shift_tiles(board, 0, 'up')[0]
         assert_equal [[2, nil, nil], [nil, nil, nil], [2, nil, nil]], board
       end
     end
@@ -45,7 +45,7 @@ class Test2048 < Minitest::Test
     after  = [[2, 2, 2], [nil, nil, nil], [nil, nil, nil]]
 
     stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'up')
+      assert_equal after, shift_tiles(before, 0, 'up')[0]
     end
   end
 
@@ -54,7 +54,7 @@ class Test2048 < Minitest::Test
     after  = [[nil, nil, 2], [nil, nil, 4], [nil, nil, nil]]
 
     stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'right')
+      assert_equal after, shift_tiles(before, 0, 'right')[0]
     end
   end
 
@@ -63,7 +63,7 @@ class Test2048 < Minitest::Test
     after  = [[nil, nil, nil], [nil, nil, nil], [2, 2, 2]]
 
     stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'down')
+      assert_equal after, shift_tiles(before, 0, 'down')[0]
     end
   end
 
@@ -72,7 +72,7 @@ class Test2048 < Minitest::Test
     after  = [[2, nil, nil], [4, nil, nil], [nil, nil, nil]]
 
     stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'left')
+      assert_equal after, shift_tiles(before, 0, 'left')[0]
     end
   end
 
@@ -81,7 +81,7 @@ class Test2048 < Minitest::Test
     after  = [[nil, 2, 4], [nil, 2, 8], [nil, nil, nil]]
 
     stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'right')
+      assert_equal after, shift_tiles(before, 0, 'right')[0]
     end
   end
 
@@ -89,19 +89,19 @@ class Test2048 < Minitest::Test
     before = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
     after  = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
 
-    assert_equal after, shift_tiles(before, 'left')
+    assert_equal after, shift_tiles(before, 0, 'left')[0]
   end
 
   def test_multiple_combinations_are_possible_in_one_line_in_one_turn
     before = [[2, 2, 8, 8], [2, 2, 2, 2], [2, 2, 2, 2], [4, 4, 4, 4]]
     after = [[nil, nil, 4, 16], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
-    assert_equal after, combine_tiles(before)
+    assert_equal after, combine_tiles(before, 0)[0]
   end
 
   def test_tiles_only_combine_once_per_turn
     before = [[nil, 2, 2, 4], [2, 2, 2, 2], [2, 2, 2, 2], [4, 4, 4, 4]]
     after = [[nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
-    assert_equal after, combine_tiles(before)
+    assert_equal after, combine_tiles(before, 0)[0]
   end
 
   def test_random_board_can_be_generated
@@ -117,5 +117,11 @@ class Test2048 < Minitest::Test
     stub :random_2_or_4, 2 do
       assert_includes possible_boards, generate_board(2)
     end
+  end
+
+  def test_score_is_tracked
+    board = [[2, 2, nil], [nil, nil, nil], [nil, nil, nil]]
+
+    assert_equal 2, shift_tiles(board, 0, 'right')[1]
   end
 end
