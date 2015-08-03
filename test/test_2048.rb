@@ -15,9 +15,9 @@ class Test2048 < Minitest::Test
   def test_random_tile_is_added
     stub :random_2_or_4, 2 do
       Array.stub_any_instance :sample, 6 do
-        board = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+        board = [[nil, nil, nil], [2, nil, nil], [nil, nil, nil]]
         board = shift_tiles(board, 'up')
-        assert_equal [[nil, nil, nil], [nil, nil, nil], [2, nil, nil]], board
+        assert_equal [[2, nil, nil], [nil, nil, nil], [2, nil, nil]], board
       end
     end
   end
@@ -98,9 +98,7 @@ class Test2048 < Minitest::Test
     before = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
     after  = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
 
-    stub :random_2_or_4, nil do
-      assert_equal after, shift_tiles(before, 'left')
-    end
+    assert_equal after, shift_tiles(before, 'left')
   end
 
   def test_multiple_combinations_are_possible_in_one_line_in_one_turn

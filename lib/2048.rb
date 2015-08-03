@@ -70,24 +70,27 @@ def say(message)
 end
 
 def shift_tiles(board, direction)
+  rotated_board = []
+
   case direction
   when 'up'
     rotated_board = rotate_board_to_the_right(board)
-    board = combine_tiles(rotated_board)
-    board = rotate_board_to_the_right(rotated_board, 3)
+    rotated_board = combine_tiles(rotated_board)
+    rotated_board = rotate_board_to_the_right(rotated_board, 3)
   when 'right'
-    board = combine_tiles(board)
+    rotated_board = combine_tiles(board)
   when 'down'
     rotated_board = rotate_board_to_the_right(board, 3)
-    board = combine_tiles(rotated_board)
-    board = rotate_board_to_the_right(rotated_board)
+    rotated_board = combine_tiles(rotated_board)
+    rotated_board = rotate_board_to_the_right(rotated_board)
   when 'left'
     rotated_board = rotate_board_to_the_right(board, 2)
-    board = combine_tiles(rotated_board)
-    board = rotate_board_to_the_right(rotated_board, 2)
+    rotated_board = combine_tiles(rotated_board)
+    rotated_board = rotate_board_to_the_right(rotated_board, 2)
   end
 
-  add_random_tile(board)
+  rotated_board = add_random_tile(rotated_board) unless board == rotated_board
+  rotated_board
 end
 
 def add_random_tile(board)
