@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require 'minitest/stub_any_instance'
 require_relative '../lib/2048'
 
 class Test2048 < Minitest::Test
@@ -13,9 +14,11 @@ class Test2048 < Minitest::Test
 
   def test_random_tile_is_added
     stub :random_2_or_4, 2 do
-      board = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
-      shift_tile(board, 'up')
-      assert_equal board.flatten.compact, [2]
+      Array.stub_any_instance :sample, 6 do
+        board = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+        board = shift_tiles(board, 'up')
+        assert_equal [[nil, nil, nil], [nil, nil, nil], [2, nil, nil]], board
+      end
     end
   end
 
