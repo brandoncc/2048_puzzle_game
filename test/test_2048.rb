@@ -86,6 +86,12 @@ class Test2048 < Minitest::Test
   end
 
   def test_board_shifts_even_if_no_combinations_are_possible
+    before = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
+    after  = [[nil, 2, 4], [nil, 2, 8], [nil, nil, nil]]
+
+    stub :random_2_or_4, nil do
+      assert_equal after, shift_tiles(before, 'right')
+    end
   end
 
   def test_multiple_combinations_are_possible_in_one_line_in_one_turn
