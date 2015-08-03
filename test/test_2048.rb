@@ -3,15 +3,6 @@ require 'minitest/stub_any_instance'
 require_relative '../lib/2048'
 
 class Test2048 < Minitest::Test
-  def setup
-    @board_with_one_combination_available =
-      [[nil, 2, 8], [nil, 4, 4], [8, 4, 16]]
-
-    # Move up and combination should be: [[nil, 2, 8], [nil, 8, 16], [8, nil, nil]]
-    @board_with_two_combinations_available =
-      [[nil, 2, 4], [nil, 4, 4], [8, 4, 16]]
-  end
-
   def test_random_tile_is_added
     stub :random_2_or_4, 2 do
       Array.stub_any_instance :sample, 6 do
