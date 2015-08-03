@@ -77,6 +77,12 @@ class Test2048 < Minitest::Test
   end
 
   def test_can_be_shifted_left
+    before = [[nil, 2, nil], [2, nil, 2], [nil, nil, nil]]
+    after  = [[2, nil, nil], [4, nil, nil], [nil, nil, nil]]
+
+    stub :random_2_or_4, nil do
+      assert_equal after, shift_tiles(before, 'left')
+    end
   end
 
   def test_board_shifts_even_if_no_combinations_are_possible

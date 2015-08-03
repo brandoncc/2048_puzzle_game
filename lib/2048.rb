@@ -10,6 +10,10 @@ def shift_tiles(board, direction)
     rotated_board = rotate_board_to_the_right(board, 3)
     board = combine_tiles(rotated_board)
     board = rotate_board_to_the_right(rotated_board)
+  when 'left'
+    rotated_board = rotate_board_to_the_right(board, 2)
+    board = combine_tiles(rotated_board)
+    board = rotate_board_to_the_right(rotated_board, 2)
   end
 
   add_random_tile(board)
