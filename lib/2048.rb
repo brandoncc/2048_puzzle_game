@@ -1,9 +1,10 @@
 def play
   board = generate_board
+  score = 0
 
   until game_over?(board)
-    print_board(board)
-    board = shift_tiles(board, ask_for_move)
+    print_board(board, score)
+    board, score = shift_tiles(board, score, ask_for_move)
   end
 
   puts 'Game over, thanks for playing!'
@@ -25,7 +26,7 @@ def ask_for_move
   input_mappings[input]
 end
 
-def print_board(board)
+def print_board(board, score)
   system("clear") or system("cls")
   print_gui_top_bar(board.length)
 
@@ -69,28 +70,28 @@ def say(message)
   puts "=> #{message}"
 end
 
-def shift_tiles(board, direction)
+def shift_tiles(board, score, direction)
   rotated_board = []
 
   case direction
   when 'up'
-    rotated_board = rotate_board_to_the_right(board)
-    rotated_board = combine_tiles(rotated_board)
-    rotated_board = rotate_board_to_the_right(rotated_board, 3)
+    rotated_board        = rotate_board_to_the_right(board)
+    rotated_board, score = combine_tiles(rotated_board, score)
+    rotated_board        = rotate_board_to_the_right(rotated_board, 3)
   when 'right'
-    rotated_board = combine_tiles(board)
+    rotated_board, score = combine_tiles(board, score)
   when 'down'
-    rotated_board = rotate_board_to_the_right(board, 3)
-    rotated_board = combine_tiles(rotated_board)
-    rotated_board = rotate_board_to_the_right(rotated_board)
+    rotated_board        = rotate_board_to_the_right(board, 3)
+    rotated_board, score = combine_tiles(rotated_board, score)
+    rotated_board        = rotate_board_to_the_right(rotated_board)
   when 'left'
-    rotated_board = rotate_board_to_the_right(board, 2)
-    rotated_board = combine_tiles(rotated_board)
-    rotated_board = rotate_board_to_the_right(rotated_board, 2)
+    rotated_board        = rotate_board_to_the_right(board, 2)
+    rotated_board, score = combine_tiles(rotated_board, score)
+    rotated_board        = rotate_board_to_the_right(rotated_board, 2)
   end
 
   rotated_board = add_random_tile(rotated_board) unless board == rotated_board
-  rotated_board
+  [rotated_board, score]
 end
 
 def add_random_tile(board)
@@ -134,7 +135,7 @@ def rotate_board_to_the_right(board, times = 1)
   board
 end
 
-def combine_tiles(board)
+def combine_tiles(board, score)
   board.each do |row|
     index = 0
 
@@ -142,6 +143,7 @@ def combine_tiles(board)
 
     while index < board.length
       if row[index] && row[index] == row[index + 1]
+        score += row[index]
         row[index] *= 2
         row.delete_at(index + 1)
       end
@@ -154,7 +156,7 @@ def combine_tiles(board)
     end
   end
 
-  board
+  [board, score]
 end
 
 def generate_board(size = 4)
