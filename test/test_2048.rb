@@ -114,4 +114,19 @@ class Test2048 < Minitest::Test
     after = [[nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
     assert_equal after, combine_tiles(before)
   end
+
+  def test_random_board_can_be_generated
+    possible_boards = [
+      [[2, 2], [nil, nil]],
+      [[nil, nil], [2, 2]],
+      [[2, nil], [2, nil]],
+      [[nil, 2], [nil, 2]],
+      [[2, nil], [nil, 2]],
+      [[nil, 2], [2, nil]]
+    ]
+
+    stub :random_2_or_4, 2 do
+      assert_includes possible_boards, generate_board(2)
+    end
+  end
 end

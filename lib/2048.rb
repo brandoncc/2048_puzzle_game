@@ -83,6 +83,24 @@ def combine_tiles(board)
   board
 end
 
+def generate_board(size = 4)
+  board = []
+
+  size.times do
+    board << []
+
+    size.times do
+      board.last << nil
+    end
+  end
+
+  2.times do
+    board = add_random_tile(board)
+  end
+
+  board
+end
+
 private
 
 def board_has_combination_available?(board)
