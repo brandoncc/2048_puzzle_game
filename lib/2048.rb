@@ -1,4 +1,11 @@
 def shift_tiles(board, direction)
+  case direction
+  when 'up'
+    rotated_board = rotate_board_to_the_right(board)
+    board = combine_tiles(rotated_board)
+    board = rotate_board_to_the_right(rotated_board, 3)
+  end
+
   add_random_tile(board)
 end
 
@@ -23,11 +30,25 @@ def game_over?(board)
 end
 
 def rotate_board_to_the_right(board, times = 1)
-  reversed_board = board.reverse
-  rotated_board  = []
+  rotated_board  = nil
 
-  board.length.times do |row|
-    rotated_board[row] = []
+  times.times do
+    reversed_board = board.reverse
+    rotated_board  = []
+
+    board.length.times do |row|
+      rotated_board[row] = []
+
+      board.length.times do |column|
+        rotated_board[row] << reversed_board[column][row]
+      end
+    end
+
+    board = rotated_board
+  end
+
+  board
+end
 
 def combine_tiles(board)
   board.each do |row|
@@ -41,8 +62,6 @@ def combine_tiles(board)
         row.delete_at(index + 1)
       end
 
-    board.length.times do |column|
-      rotated_board[row] << reversed_board[column][row]
       index += 1
     end
 

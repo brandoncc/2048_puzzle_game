@@ -50,6 +50,12 @@ class Test2048 < Minitest::Test
   end
 
   def test_board_can_be_shifted_up
+    before = [[nil, 2, nil], [2, nil, 2], [nil, nil, nil]]
+    after  = [[2, 2, 2], [nil, nil, nil], [nil, nil, nil]]
+
+    stub :random_2_or_4, nil do
+      assert_equal after, shift_tiles(before, 'up')
+    end
   end
 
   def test_board_can_be_shifted_right
