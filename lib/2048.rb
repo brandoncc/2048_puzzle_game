@@ -17,7 +17,7 @@ def ask_for_move
 
   until input_mappings.keys.include?(input)
     puts
-    puts 'Sorry, that is not valid input. Please try again.'
+    puts 'Sorry, that is not a valid response.'
     say 'What direction would you like to shift the tiles? (U/D/L/R)'
     input = gets.chomp
   end
@@ -192,4 +192,16 @@ def row_has_combination_available?(row)
   false
 end
 
-play
+begin
+  play
+
+  say 'Would you like to play again? (Y/N)'
+  play_again = gets.chomp.downcase
+
+  until 'yn'.include?(play_again)
+    puts
+    puts 'Sorry, that is not a valid response.'
+    say 'Would you like to play again? (Y/N)'
+    play_again = gets.chomp.downcase
+  end
+end until play_again == 'n'
