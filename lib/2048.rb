@@ -153,12 +153,14 @@ def rotate_board_to_the_right(board, times = 1)
 end
 
 def combine_tiles(board, score)
-  board.each do |row|
+  internal_board = Marshal.load(Marshal.dump(board))
+
+  internal_board.each do |row|
     index = 0
 
     row.compact!
 
-    while index < board.length
+    while index < internal_board.length
       if row[index] && row[index] == row[index + 1]
         score += row[index]
         row[index] *= 2
@@ -168,12 +170,12 @@ def combine_tiles(board, score)
       index += 1
     end
 
-    until row.length == board.length
+    until row.length == internal_board.length
       row.unshift nil
     end
   end
 
-  [board, score]
+  [internal_board, score]
 end
 
 def generate_board(size = 4)
