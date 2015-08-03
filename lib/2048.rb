@@ -33,19 +33,18 @@ def combine_tiles(board)
   board.each do |row|
     index = 0
 
+    row.compact!
+
     while index < board.length
       if row[index] && row[index] == row[index + 1]
         row[index] *= 2
-        row[index + 1] = nil
-        index += 1
+        row.delete_at(index + 1)
       end
 
     board.length.times do |column|
       rotated_board[row] << reversed_board[column][row]
       index += 1
     end
-
-    row.compact!
 
     until row.length == board.length
       row.unshift nil
