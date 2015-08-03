@@ -94,6 +94,15 @@ class Test2048 < Minitest::Test
     end
   end
 
+  def test_board_does_not_change_if_there_are_no_slides_or_combinations_available_that_direction
+    before = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
+    after  = [[2, 4, nil], [2, 8, nil], [nil, nil, nil]]
+
+    stub :random_2_or_4, nil do
+      assert_equal after, shift_tiles(before, 'left')
+    end
+  end
+
   def test_multiple_combinations_are_possible_in_one_line_in_one_turn
     before = [[2, 2, 8, 8], [2, 2, 2, 2], [2, 2, 2, 2], [4, 4, 4, 4]]
     after = [[nil, nil, 4, 16], [nil, nil, 4, 4], [nil, nil, 4, 4], [nil, nil, 8, 8]]
