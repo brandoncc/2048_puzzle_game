@@ -1,3 +1,15 @@
+TOP_LEFT_CHAR = "\u250C"
+TOP_CENTER_CHAR = "\u252C"
+TOP_RIGHT_CHAR = "\u2510"
+MIDDLE_LEFT_CHAR = "\u251C"
+MIDDLE_RIGHT_CHAR = "\u2524"
+BOTTOM_LEFT_CHAR = "\u2514"
+BOTTOM_CENTER_CHAR = "\u2534"
+BOTTOM_RIGHT_CHAR = "\u2518"
+HORIZONTAL_BAR_CHAR = "\u2500"
+VERTICAL_BAR_CHAR = "\u2502"
+CROSS_SECTION_CHAR = "\u253C"
+
 def play
   board = generate_board
   score = 0
@@ -28,6 +40,7 @@ end
 
 def print_board(board, score)
   system("clear") or system("cls")
+  print_score_board(board.length, score)
   print_gui_top_bar(board.length)
 
   board.each_with_index do |row, index|
@@ -43,27 +56,31 @@ def print_board(board, score)
   print_gui_bottom_bar(board.length)
 end
 
+def print_score_board(length, score)
+  score_string = "Score: #{score}"
+  puts "#{TOP_LEFT_CHAR}#{HORIZONTAL_BAR_CHAR * (score_string.length + 2)}#{TOP_RIGHT_CHAR}".rjust((length * 7) + 1)
+  puts "#{VERTICAL_BAR_CHAR} #{score_string} #{VERTICAL_BAR_CHAR}".rjust((length * 7) + 1)
+end
+
 def print_gui_top_bar(length)
-  bar_char = "\u2500"
-  puts "\u250C" + ([(bar_char * 6)] * length).join("\u252C") + "\u2510"
+  puts "#{TOP_LEFT_CHAR}#{([(HORIZONTAL_BAR_CHAR * 6)] * length).join(TOP_CENTER_CHAR)}#{TOP_RIGHT_CHAR}"
 end
 
 def print_gui_bottom_bar(length)
-  bar_char = "\u2500"
-  puts "\u2514" + ([(bar_char * 6)] * length).join("\u2534") + "\u2518"
+  puts "#{BOTTOM_LEFT_CHAR}#{([(HORIZONTAL_BAR_CHAR * 6)] * length).join(BOTTOM_CENTER_CHAR)}#{BOTTOM_RIGHT_CHAR}"
 end
 
 def print_empty_gui_row(length)
-  puts "\u2502" + ([' ' * 6] * length).join("\u2502") + "\u2502"
+  puts "#{VERTICAL_BAR_CHAR}#{([' ' * 6] * length).join(VERTICAL_BAR_CHAR)}#{VERTICAL_BAR_CHAR}"
 end
 
 def print_gui_tile_row(row)
-  inner_string = row.map { |tile| "#{tile}".center(6) }.join("\u2502")
-  puts "\u2502#{inner_string}\u2502"
+  inner_string = row.map { |tile| "#{tile}".center(6) }.join(VERTICAL_BAR_CHAR)
+  puts "#{VERTICAL_BAR_CHAR}#{inner_string}#{VERTICAL_BAR_CHAR}"
 end
 
 def print_horizontal_bar(length)
-  puts "\u251C" + (["\u2500" * 6] * length).join("\u253C") + "\u2524"
+  puts "#{MIDDLE_LEFT_CHAR}#{(["#{HORIZONTAL_BAR_CHAR}" * 6] * length).join(CROSS_SECTION_CHAR)}#{MIDDLE_RIGHT_CHAR}"
 end
 
 def say(message)
