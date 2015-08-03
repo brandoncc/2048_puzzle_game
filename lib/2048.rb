@@ -1,3 +1,74 @@
+def play
+  board = generate_board
+
+  until game_over?(board)
+    print_board(board)
+    board = shift_tiles(board, ask_for_move)
+  end
+
+  puts 'Game over, thanks for playing!'
+end
+
+def ask_for_move
+  input_mappings = { 'u' => 'up', 'd' => 'down', 'l' => 'left', 'r' => 'right' }
+  say 'What direction would you like to shift the tiles? (U/D/L/R)'
+
+  input = gets.chomp.downcase
+
+  until input_mappings.keys.include?(input)
+    puts
+    puts 'Sorry, that is not valid input. Please try again.'
+    say 'What direction would you like to shift the tiles? (U/D/L/R)'
+    input = gets.chomp
+  end
+
+  input_mappings[input]
+end
+
+def print_board(board)
+  system("clear") or system("cls")
+  print_gui_top_bar(board.length)
+
+  board.each_with_index do |row, index|
+    print_empty_gui_row(board.length)
+    print_gui_tile_row(row)
+    print_empty_gui_row(board.length)
+
+    if index < board.length - 1
+      print_horizontal_bar(board.length)
+    end
+  end
+
+  print_gui_bottom_bar(board.length)
+end
+
+def print_gui_top_bar(length)
+  bar_char = "\u2500"
+  puts "\u250C" + ([(bar_char * 6)] * length).join("\u252C") + "\u2510"
+end
+
+def print_gui_bottom_bar(length)
+  bar_char = "\u2500"
+  puts "\u2514" + ([(bar_char * 6)] * length).join("\u2534") + "\u2518"
+end
+
+def print_empty_gui_row(length)
+  puts "\u2502" + ([' ' * 6] * length).join("\u2502") + "\u2502"
+end
+
+def print_gui_tile_row(row)
+  inner_string = row.map { |tile| "#{tile}".center(6) }.join("\u2502")
+  puts "\u2502#{inner_string}\u2502"
+end
+
+def print_horizontal_bar(length)
+  puts "\u251C" + (["\u2500" * 6] * length).join("\u253C") + "\u2524"
+end
+
+def say(message)
+  puts "=> #{message}"
+end
+
 def shift_tiles(board, direction)
   case direction
   when 'up'
@@ -101,8 +172,6 @@ def generate_board(size = 4)
   board
 end
 
-private
-
 def board_has_combination_available?(board)
   board.each do |row|
     return true if row_has_combination_available?(row)
@@ -122,3 +191,5 @@ def row_has_combination_available?(row)
 
   false
 end
+
+play
