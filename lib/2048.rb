@@ -160,23 +160,33 @@ def combine_tiles(board, score)
     index = 0
 
     row.compact!
-
-    while index < internal_board.length
-      if row[index] && row[index] == row[index + 1]
-        score += row[index]
-        row[index] *= 2
-        row.delete_at(index + 1)
-      end
-
-      index += 1
-    end
-
-    until row.length == internal_board.length
-      row.unshift nil
-    end
+    row.reverse!
+    row, score = combine_row(row, score)
+    row.reverse!
+    pad_row(row, internal_board.length)
   end
 
   [internal_board, score]
+end
+
+def combine_row(row, score)
+  index = 0
+  while index < row.length
+    if row[index] && row[index] == row[index + 1]
+      score += row[index]
+      row[index] *= 2
+      row.delete_at(index + 1)
+    end
+    index += 1
+  end
+
+  [row, score]
+end
+
+def pad_row(row, size)
+  until row.length == size
+    row.unshift nil
+  end
 end
 
 def generate_board(size = 4)

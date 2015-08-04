@@ -124,4 +124,13 @@ class Test2048 < Minitest::Test
 
     assert_equal 2, shift_tiles(board, 0, 'right')[1]
   end
+
+  def test_combinations_on_far_side_happen_first
+    before = [[2, 2, 2], [nil, nil, nil], [nil, nil, nil]]
+    after  = [[nil, 2, 4], [nil, nil, nil], [nil, nil, nil]]
+
+    stub :random_2_or_4, nil do
+      assert_equal after, shift_tiles(before, 0, 'right')[0]
+    end
+  end
 end
