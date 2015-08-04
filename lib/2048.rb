@@ -156,21 +156,23 @@ end
 def combine_tiles(board, score)
   internal_board = Marshal.load(Marshal.dump(board))
 
-  internal_board.each do |row|
-    index = 0
-
-    row.compact!
-    row.reverse!
-    row, score = combine_row(row, score)
-    row.reverse!
-    pad_row(row, internal_board.length)
+  internal_board.each_with_index do |row, index|
+    row                   = collapse(row)
+    row, score            = combine(row, score)
+    internal_board[index] = pad(row, internal_board.length)
   end
 
   [internal_board, score]
 end
 
-def combine_row(row, score)
+def collapse(row)
+  row.compact
+end
+
+def combine(row, score)
+  row = row.reverse
   index = 0
+
   while index < row.length
     if row[index] && row[index] == row[index + 1]
       score += row[index]
@@ -180,13 +182,17 @@ def combine_row(row, score)
     index += 1
   end
 
-  [row, score]
+  [row.reverse, score]
 end
 
-def pad_row(row, size)
+def pad(row, size)
+  row = Marshal.load(Marshal.dump(row))
+
   until row.length == size
     row.unshift nil
   end
+
+  row
 end
 
 def generate_board(size = 4)
