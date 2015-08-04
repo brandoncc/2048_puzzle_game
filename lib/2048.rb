@@ -19,6 +19,7 @@ def play
     board, score = shift_tiles(board, score, ask_for_move)
   end
 
+  print_board(board, score)
   puts 'Game over, thanks for playing!'
 end
 
